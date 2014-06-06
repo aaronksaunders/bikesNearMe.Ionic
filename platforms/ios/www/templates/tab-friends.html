@@ -1,0 +1,10 @@
+<ion-view title="Friends">
+  <ion-content class="has-header">
+    <ion-list>
+      <ion-item ng-repeat="location in bikeLocation" type="item-text-wrap" href="#/tab/friend/{{location.id}}">
+          <p>{{location.stationName}}</p>
+          <p>{{location.statusValue}} {{location.availableBikes}} / {{location.availableDocks}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
