@@ -47,6 +47,11 @@
 		95397BD5BFAC409085B01DBC /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 81DEE3D304964ED690B9B9BA /* CDVReachability.m */; };
 		D3A81F83C56D4DDD8B1DBEBD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B6C9B4F062445019D8946D6 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D88B696EA8664BFAB0E44E3F /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CE654D91F1A5499687BE5E2A /* CDVStatusBar.m */; };
+		C19288C9964E41A3BC77A08A /* AsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 770739516A4045DA9CC15797 /* AsyncImageView.m */; };
+		242315282CE7453DB9A4BA4A /* CDVAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1012D86C2E3A4D51B05CC3CB /* CDVAnnotation.m */; };
+		72B9EEB52BF94496B6A08889 /* MapKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AACDA66CE2A548CBB3459804 /* MapKit.m */; };
+		210F1CBE5F0749B59BFF48F5 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E73A80808B4973B24F734E /* icon.png */; };
+		83B0A3B1D8954ADD983856F7 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA81E578191E493280AD7F8B /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +133,14 @@
 		0B6C9B4F062445019D8946D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 		CE654D91F1A5499687BE5E2A /* CDVStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVStatusBar.m"; path = "org.apache.cordova.statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		38ADF7451F734FD3B3E1DFB7 /* CDVStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVStatusBar.h"; path = "org.apache.cordova.statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		770739516A4045DA9CC15797 /* AsyncImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "AsyncImageView.m"; path = "com.phonegap.plugins.mapkit/AsyncImageView.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		1012D86C2E3A4D51B05CC3CB /* CDVAnnotation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVAnnotation.m"; path = "com.phonegap.plugins.mapkit/CDVAnnotation.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		AACDA66CE2A548CBB3459804 /* MapKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "MapKit.m"; path = "com.phonegap.plugins.mapkit/MapKit.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		A764CE44A3B24AC19A493D08 /* AsyncImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AsyncImageView.h"; path = "com.phonegap.plugins.mapkit/AsyncImageView.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		35F6CB90F3CE49D49F105681 /* CDVAnnotation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVAnnotation.h"; path = "com.phonegap.plugins.mapkit/CDVAnnotation.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		9C4B64445FC34F93868ADB06 /* MapKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MapKit.h"; path = "com.phonegap.plugins.mapkit/MapKit.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		84E73A80808B4973B24F734E /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "icon.png"; path = "icon.png"; sourceTree = "<group>"; fileEncoding = 4; };
+		EA81E578191E493280AD7F8B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "MapKit.framework"; path = "System/Library/Frameworks/MapKit.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +154,7 @@
 				305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */,
 				5AEE5B35173C68D80009041E /* CoreLocation.framework in Frameworks */,
 				D3A81F83C56D4DDD8B1DBEBD /* SystemConfiguration.framework in Frameworks */,
+				83B0A3B1D8954ADD983856F7 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,6 +236,7 @@
 				308D052D1370CCF300D202BF /* icons */,
 				308D05311370CCF300D202BF /* splash */,
 				8D1107310486CEB800E47090 /* BikesNearBy-Info.plist */,
+				84E73A80808B4973B24F734E /* icon.png */,
 			);
 			name = Resources;
 			path = "BikesNearBy/Resources";
@@ -235,6 +250,7 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
 				0B6C9B4F062445019D8946D6 /* SystemConfiguration.framework */,
+				EA81E578191E493280AD7F8B /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -266,6 +282,12 @@
 				71CAAFB8AFD04978B01AD725 /* CDVReachability.h */,
 				CE654D91F1A5499687BE5E2A /* CDVStatusBar.m */,
 				38ADF7451F734FD3B3E1DFB7 /* CDVStatusBar.h */,
+				770739516A4045DA9CC15797 /* AsyncImageView.m */,
+				1012D86C2E3A4D51B05CC3CB /* CDVAnnotation.m */,
+				AACDA66CE2A548CBB3459804 /* MapKit.m */,
+				A764CE44A3B24AC19A493D08 /* AsyncImageView.h */,
+				35F6CB90F3CE49D49F105681 /* CDVAnnotation.h */,
+				9C4B64445FC34F93868ADB06 /* MapKit.h */,
 			);
 			name = Plugins;
 			path = "BikesNearBy/Plugins";
@@ -429,6 +451,7 @@
 				7E7966E11810823500FA85AD /* icon-50@2x.png in Resources */,
 				7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
+				210F1CBE5F0749B59BFF48F5 /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +491,9 @@
 				8F0B6F3D4F57480DBB167858 /* CDVConnection.m in Sources */,
 				95397BD5BFAC409085B01DBC /* CDVReachability.m in Sources */,
 				D88B696EA8664BFAB0E44E3F /* CDVStatusBar.m in Sources */,
+				C19288C9964E41A3BC77A08A /* AsyncImageView.m in Sources */,
+				242315282CE7453DB9A4BA4A /* CDVAnnotation.m in Sources */,
+				72B9EEB52BF94496B6A08889 /* MapKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

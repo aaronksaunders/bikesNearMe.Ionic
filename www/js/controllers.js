@@ -1,6 +1,58 @@
 angular.module('starter.controllers', [])
 
     .controller('DashCtrl', function ($scope) {
+        $scope.mapCreated = function (map) {
+            $scope.map = map;
+        };
+
+        $scope.centerOnMe = function () {
+            console.log("Centering");
+            if (!$scope.map) {
+                console.log("No map found");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                console.log('Got pos', pos);
+                $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+                setTimeout(function () {
+                    google.maps.event.trigger($scope.map, "resize");
+                }, 100);
+                //$scope.loading.hide();
+            }, function (error) {
+                alert('Unable to get location: ' + error.message);
+            });
+        };
+
+        function initializeMap(_map) {
+
+
+            //google.maps.event.addDomListener(window, 'load', function () {
+            var mapOptions = {
+                center: new google.maps.LatLng(43.07493, -89.381388),
+                zoom: 16,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            $scope.map = new google.maps.Map(_map, mapOptions);
+
+            // Stop the side bar from dragging when mousedown/tapdown on the map
+            google.maps.event.addDomListener(_map, 'mousedown', function (e) {
+                e.preventDefault();
+                return false;
+            });
+            // });
+
+            setTimeout(function () {
+                google.maps.event.trigger($scope.map, "resize");
+            }, 100);
+        }
+
+        setTimeout(function () {
+            var mapElement = angular.element(document).find('map')[0];
+            initializeMap(mapElement);
+        }, 300);
+
+
     })
 
     .controller('BikesMainCtrl', ['$scope', 'CityBikeNY', '$cordovaGeolocation',

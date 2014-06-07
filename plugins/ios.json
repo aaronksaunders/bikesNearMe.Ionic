@@ -39,6 +39,10 @@
                         {
                             "xml": "<preference name=\"StatusBarBackgroundColor\" value=\"#000000\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"MapKit\"><param name=\"ios-package\" value=\"MapKitView\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -48,6 +52,12 @@
                     "SystemConfiguration.framework": [
                         {
                             "xml": "true",
+                            "count": 1
+                        }
+                    ],
+                    "MapKit.framework": [
+                        {
+                            "xml": "false",
                             "count": 1
                         }
                     ]
@@ -72,6 +82,9 @@
             "PACKAGE_NAME": "com.ionicframework.starter"
         },
         "org.apache.cordova.statusbar": {
+            "PACKAGE_NAME": "com.clearlyinnovative.BikesNearBy"
+        },
+        "com.phonegap.plugins.mapkit": {
             "PACKAGE_NAME": "com.clearlyinnovative.BikesNearBy"
         }
     },
