@@ -1,9 +1,7 @@
 angular.module('starter.controllers', [])
 
     .controller('DashCtrl', function ($scope) {
-        $scope.mapCreated = function (map) {
-            $scope.map = map;
-        };
+
 
         $scope.centerOnMe = function () {
             console.log("Centering");
@@ -12,50 +10,41 @@ angular.module('starter.controllers', [])
                 return;
             }
 
+
+        };
+
+        function initializeMap($scope) {
+
+            $scope.show = false
+
             navigator.geolocation.getCurrentPosition(function (pos) {
-                console.log('Got pos', pos);
-                $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-                setTimeout(function () {
-                    google.maps.event.trigger($scope.map, "resize");
-                }, 100);
-                //$scope.loading.hide();
+                console.log('Got pos' + JSON.stringify(pos));
+
+                $scope.show = true;
+                $scope.zoom = 15;
+                angular.extend($scope, {
+                    center: {
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude,
+                    },
+                    options: {
+                        disableDefaultUI: false,
+                        panControl: false
+                    }
+                });
+                $scope.$apply();
+
             }, function (error) {
                 alert('Unable to get location: ' + error.message);
             });
-        };
-
-        function initializeMap(_map) {
-
-
-            //google.maps.event.addDomListener(window, 'load', function () {
-            var mapOptions = {
-                center: new google.maps.LatLng(43.07493, -89.381388),
-                zoom: 16,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            $scope.map = new google.maps.Map(_map, mapOptions);
-
-            // Stop the side bar from dragging when mousedown/tapdown on the map
-            google.maps.event.addDomListener(_map, 'mousedown', function (e) {
-                e.preventDefault();
-                return false;
-            });
-            // });
-
-            setTimeout(function () {
-                google.maps.event.trigger($scope.map, "resize");
-            }, 100);
         }
 
-        setTimeout(function () {
-            var mapElement = angular.element(document).find('map')[0];
-            initializeMap(mapElement);
-        }, 300);
-
+        initializeMap($scope);
 
     })
 
-    .controller('BikesMainCtrl', ['$scope', 'CityBikeNY', '$cordovaGeolocation',
+    .controller('BikesMainCtrl', ['$scope', 'CityBikeNY', '$cordovaGeolocation', '$state',
+
 
         /**
          *
@@ -63,9 +52,15 @@ angular.module('starter.controllers', [])
          * @param CityBikeNY
          * @param $cordovaGeolocation
          */
-            function ($scope, CityBikeNY, $cordovaGeolocation) {
+            function ($scope, CityBikeNY, $cordovaGeolocation, $state) {
 
 
+            $scope.itemClicked = function (_item, $event) {
+                $event.preventDefault();
+                $state.transitionTo('tab.bikeStation-detail', {
+                    data: JSON.stringify(_item)
+                });
+            };
             /**
              *
              * @param coord1 starting location
@@ -146,9 +141,49 @@ angular.module('starter.controllers', [])
 
         }])
 
-    .controller('FriendDetailCtrl', function ($scope, $stateParams, Friends) {
-        $scope.friend = Friends.get($stateParams.friendId);
-    })
+    .controller('BikeStationDetailCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {
+
+        alert($stateParams);
+        var info = JSON.parse($stateParams.data);
+
+        function initializeMap($scope, info) {
+
+            $scope.show = false
+
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                console.log('Got pos' + JSON.stringify(pos));
+                console.log('Got info' + JSON.stringify(info, null, 2));
+
+
+                angular.extend($scope, {
+                    markers: [
+                        {
+                            latitude: info.latitude,
+                            longitude: info.longitude,
+                            title: "location"
+                        }
+                    ],
+                    options: {
+                        disableDefaultUI: false,
+                        panControl: false
+                    },
+                    center: {
+                        latitude: info.latitude,
+                        longitude: info.longitude,
+                    }
+                });
+
+                $scope.show = true;
+                $scope.zoom = 20;
+                $scope.$apply();
+
+            }, function (error) {
+                alert('Unable to get location: ' + error.message);
+            });
+        }
+
+        initializeMap($scope, info);
+    }])
 
     .controller('AccountCtrl', function ($scope) {
     });

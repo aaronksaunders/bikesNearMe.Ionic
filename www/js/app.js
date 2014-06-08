@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ngCordova', 'ionic', 'starter.controllers', 'starter.services', 'ngResource'])
+angular.module('starter', ['ngCordova', 'ionic','google-maps', 'starter.controllers', 'starter.services', 'ngResource'])
 
     .run(function ($ionicPlatform) {
         $ionicPlatform.ready(function () {
@@ -60,7 +60,7 @@ angular.module('starter', ['ngCordova', 'ionic', 'starter.controllers', 'starter
                 }
             })
             .state('tab.bikeStation-detail', {
-                url: '/bikeStation/:bikeId',
+                url: '/bikeStation/:data',
                 views: {
                     'tab-bikeStations': {
                         templateUrl: 'templates/bikeStation-detail.html',

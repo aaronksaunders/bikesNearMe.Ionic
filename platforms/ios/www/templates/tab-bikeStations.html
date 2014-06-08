@@ -1,9 +1,10 @@
-<ion-view title="Friends">
+<ion-view title="Bikes Near By">
   <ion-content class="has-header">
     <ion-list>
-      <ion-item ng-repeat="location in bikeLocation" type="item-text-wrap" href="#/tab/friend/{{location.id}}">
+      <ion-item ng-repeat="location in bikeLocation" type="item-text-wrap"  ng-click="itemClicked(location, $event)">
           <p>{{location.stationName}}</p>
           <p>{{location.statusValue}} {{location.availableBikes}} / {{location.availableDocks}}</p>
+          <p>{{location.distance}} miles away</p>
       </ion-item>
     </ion-list>
   </ion-content>

@@ -12,6 +12,7 @@
     <orderEntry type="library" name="should-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="titanium-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="ng-cordova" level="application" />
+    <orderEntry type="library" name="bikesNearMe.Ionic node_modules" level="project" />
   </component>
 </module>
 

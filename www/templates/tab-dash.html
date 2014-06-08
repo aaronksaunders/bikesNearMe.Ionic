@@ -1,8 +1,7 @@
-<ion-view title="Dashboard">
-    <ion-content class="has-header padding" scroll="false">
-        <map ></map>
+
+<ion-view title="Dashboard" >
+    <ion-content scroll="false">
+        <google-map center="center" zoom="zoom" ng-if="show" options="options">
+        </google-map>
     </ion-content>
-    <ion-footer-bar class="bar-stable">
-        <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
-    </ion-footer-bar>
 </ion-view>
