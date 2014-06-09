@@ -6,6 +6,7 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var shell = require('gulp-shell');
 
 var paths = {
   sass: ['./scss/**/*.scss']
@@ -48,3 +49,13 @@ gulp.task('git-check', function(done) {
   }
   done();
 });
+
+gulp.task('docs', function () {
+    console.log("[JSDuck] Creating documentation");
+    return gulp.src('')
+        .pipe(shell([
+            'jsduck www/js/ --title "Creating Documentation"  --output docs'
+        ]));
+});
+
+gulp.task('default', ['docs']);

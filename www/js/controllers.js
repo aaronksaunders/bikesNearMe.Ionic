@@ -1,8 +1,17 @@
 angular.module('starter.controllers', [])
+/**
+ * @class Application.MainCtrl
+ *
+ * Displays Home Tab of Application which is a map showing all bike station locations
+ *
+ * @param {Object} $scope
+ */
+    .controller('MainCtrl', function ($scope) {
 
-    .controller('DashCtrl', function ($scope) {
-
-
+        /**
+         * @method centerOnMe
+         *
+         */
         $scope.centerOnMe = function () {
             console.log("Centering");
             if (!$scope.map) {
@@ -10,9 +19,14 @@ angular.module('starter.controllers', [])
                 return;
             }
 
-
         };
 
+        /**
+         * @private
+         * @method initializeMap
+         *
+         * @param $scope
+         */
         function initializeMap($scope) {
 
             $scope.show = false
@@ -43,18 +57,31 @@ angular.module('starter.controllers', [])
 
     })
 
+
+/**
+ * @class Application.BikesMainCtrl
+ *
+ * Uses Factory method {@link Factory.CityBikeNY#getClosest getClosest} to get the stations
+ *
+ * @param {Object} $scope
+ * @param {Factory.CityBikeNY} CityBikeNY
+ * @param {Directive} $cordovaGeolocation
+ * @param {Object} $state
+ */
     .controller('BikesMainCtrl', ['$scope', 'CityBikeNY', '$cordovaGeolocation', '$state',
 
+        function ($scope, CityBikeNY, $cordovaGeolocation, $state) {
 
-        /**
-         *
-         * @param $scope
-         * @param CityBikeNY
-         * @param $cordovaGeolocation
-         */
-            function ($scope, CityBikeNY, $cordovaGeolocation, $state) {
-
-
+            /**
+             * @private
+             * @method itemClicked
+             *
+             * called when a bikestation in the list is clicked, when clicked the detail
+             * page for the specified object is rendered by the {@link Application.BikeStationDetailCtrl BikeStationDetailCtrl}
+             *
+             * @param _item
+             * @param $event
+             */
             $scope.itemClicked = function (_item, $event) {
                 $event.preventDefault();
                 $state.transitionTo('tab.bikeStation-detail', {
@@ -84,13 +111,29 @@ angular.module('starter.controllers', [])
         }])
 
 /**
+ * @class Application.BikeStationDetailCtrl
  *
+ * Displays Detail of Bike Station Location
+ *
+ * @param {Object} $scope
+ * @param {Directive} $cordovaGeolocation
+ * @param {Object} $stateParams
  */
+
     .controller('BikeStationDetailCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {
 
-        /* this is the stringified JSON object representing the station clicked*/
+        /* this is the stringified JSON object representing the station clicked */
         var info = JSON.parse($stateParams.data);
 
+        /**
+         * @method initializeMap
+         *
+         * uses google maps angular directive to dislay the location of the bike station
+         * on the map. It will use the marker object to display the exact location.
+         *
+         * @param {Object} $scope
+         * @param {Object} info BikeStation information as JSON object passed in from $stateParams
+         */
         function initializeMap($scope, info) {
 
             // do not display map element until we have location

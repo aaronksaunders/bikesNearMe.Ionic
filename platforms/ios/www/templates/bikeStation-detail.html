@@ -6,7 +6,7 @@
 -->
 <ion-view title="">
     <ion-content scroll="false">
-        <google-map id="detailMap" center="center" zoom="zoom" ng-if="show"  mark-click="true"  >
+        <google-map id="detailMap" center="center" zoom="zoom" ng-if="show"  mark-click="true"  options="options">
             <markers coords="'self'" icon='map.marker.icon'  ng-if="show">
                 <marker coords='markers[0]'
                         icon='map.marker.icon'>

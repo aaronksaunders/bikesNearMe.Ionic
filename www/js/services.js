@@ -1,4 +1,8 @@
+/**
+ * @class services
+ */
 angular.module('starter.services', [])
+
     .directive('map', function () {
         return {
             restrict: 'E',
@@ -28,11 +32,20 @@ angular.module('starter.services', [])
         }
     })
 /**
+ * @class Factory.CityBikeNY
+ *
+ * this gets the CityBikeNY locations from the http endpoint that has been provided
+ *
+ * <code>http://www.citibikenyc.com/stations/json</code>
  *
  */
     .factory('CityBikeNY', ['$resource', '$q', function ($resource, $q) {
 
         /**
+         * @private
+         * @method getDistance
+         *
+         * private method get the distance between the two coords provided
          *
          * @param coord1 starting location
          * @param coord2 ending location
@@ -74,6 +87,9 @@ angular.module('starter.services', [])
         });
 
         /**
+         * @method getClosest
+         *
+         * gets the closest bike stations to your current location
          *
          * @param _currentPosition
          * @param _count
