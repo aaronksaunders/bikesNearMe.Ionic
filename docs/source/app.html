@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='Application'>/**
+</span> * @class Application
+ *
+ * Ionic Bikes Near Me App
+ *
+ * angular.module is a global place for creating, registering and retrieving Angular modules
+ * &#39;starter&#39; is the name of this angular module example (also set in a &lt;body&gt; attribute in index.html)
+ * the 2nd parameter is an array of &#39;requires&#39;
+ * &#39;starter.services&#39; is found in services.js
+ * &#39;starter.controllers&#39; is found in controllers.js
+ *
+ */
+angular.module(&#39;starter&#39;, [&#39;ngCordova&#39;, &#39;ionic&#39;, &#39;google-maps&#39;, &#39;starter.controllers&#39;, &#39;starter.services&#39;, &#39;ngResource&#39;])
+<span id='starter-run'>/**
+</span> * @class starter.run
+ *
+ *
+ */
+    .run(function ($ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova &amp;&amp; window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+            }
+            if (window.StatusBar) {
+                // org.apache.cordova.statusbar required
+                StatusBar.styleDefault();
+            }
+        });
+    })
+<span id='starter-config'>/**
+</span> * @class starter.config
+ *
+ * Ionic uses AngularUI Router which uses the concept of states
+ * Learn more here: https://github.com/angular-ui/ui-router
+ * Set up the various states which the app can be in.
+ * Each state&#39;s controller can be found in controllers.js
+ */
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+
+        delete $httpProvider.defaults.headers.common[&#39;X-Requested-With&#39;];
+
+
+        $stateProvider
+
+            // setup an abstract state for the tabs directive
+            .state(&#39;tab&#39;, {
+                url: &quot;/tab&quot;,
+                abstract: true,
+                templateUrl: &quot;templates/tabs.html&quot;
+            })
+
+            // Each tab has its own nav history stack:
+
+            .state(&#39;tab.dash&#39;, {
+                url: &#39;/dash&#39;,
+                views: {
+                    &#39;tab-dash&#39;: {
+                        templateUrl: &#39;templates/tab-dash.html&#39;,
+                        controller: &#39;MainCtrl&#39;
+                    }
+                }
+            })
+
+            .state(&#39;tab.bikeStations&#39;, {
+                url: &#39;/bikeStations&#39;,
+                views: {
+                    &#39;tab-bikeStations&#39;: {
+                        templateUrl: &#39;templates/tab-bikeStations.html&#39;,
+                        controller: &#39;BikesMainCtrl as bikesMain&#39;
+                    }
+                }
+            })
+            .state(&#39;tab.bikeStation-detail&#39;, {
+                url: &#39;/bikeStation/:data&#39;,
+                views: {
+                    &#39;tab-bikeStations&#39;: {
+                        templateUrl: &#39;templates/bikeStation-detail.html&#39;,
+                        controller: &#39;BikeStationDetailCtrl as stationDetail&#39;
+                    }
+                }
+            })
+            /* tab.account */
+            .state(&#39;tab.account&#39;, {
+                url: &#39;/account&#39;,
+                views: {
+                    &#39;tab-account&#39;: {
+                        templateUrl: &#39;templates/tab-account.html&#39;,
+                        controller: &#39;AccountCtrl&#39;
+                    }
+                }
+            })
+
+        // if none of the above states are matched, use this as the fallback
+        $urlRouterProvider.otherwise(&#39;/tab/dash&#39;);
+
+    });
+
+</pre>
+</body>
+</html>

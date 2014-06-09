@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">angular.module(&#39;starter.controllers&#39;, [])
+<span id='Application-MainCtrl'>/**
+</span> * @class Application.MainCtrl
+ *
+ * Displays Home Tab of Application which is a map showing all bike station locations
+ *
+ * @param {Object} $scope
+ */
+    .controller(&#39;MainCtrl&#39;, function ($scope) {
+
+<span id='Application-MainCtrl-method-centerOnMe'>        /**
+</span>         * @method centerOnMe
+         *
+         */
+        $scope.centerOnMe = function () {
+            console.log(&quot;Centering&quot;);
+            if (!$scope.map) {
+                console.log(&quot;No map found&quot;);
+                return;
+            }
+
+        };
+
+<span id='Application-MainCtrl-method-initializeMap'>        /**
+</span>         * @private
+         * @method initializeMap
+         *
+         * @param $scope
+         */
+        function initializeMap($scope) {
+
+            $scope.show = false
+
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                console.log(&#39;Got pos&#39; + JSON.stringify(pos));
+
+                $scope.show = true;
+                $scope.zoom = 15;
+                angular.extend($scope, {
+                    center: {
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude,
+                    },
+                    options: {
+                        disableDefaultUI: false,
+                        panControl: false
+                    }
+                });
+                $scope.$apply();
+
+            }, function (error) {
+                alert(&#39;Unable to get location: &#39; + error.message);
+            });
+        }
+
+        initializeMap($scope);
+
+    })
+
+
+<span id='Application-BikesMainCtrl'>/**
+</span> * @class Application.BikesMainCtrl
+ *
+ * Uses Factory method {@link Factory.CityBikeNY#getClosest getClosest} to get the stations
+ *
+ * @param {Object} $scope
+ * @param {Factory.CityBikeNY} CityBikeNY
+ * @param {Directive} $cordovaGeolocation
+ * @param {Object} $state
+ */
+    .controller(&#39;BikesMainCtrl&#39;, [&#39;$scope&#39;, &#39;CityBikeNY&#39;, &#39;$cordovaGeolocation&#39;, &#39;$state&#39;,
+
+        function ($scope, CityBikeNY, $cordovaGeolocation, $state) {
+
+<span id='Application-BikesMainCtrl-method-itemClicked'>            /**
+</span>             * @private
+             * @method itemClicked
+             *
+             * called when a bikestation in the list is clicked, when clicked the detail
+             * page for the specified object is rendered by the {@link Application.BikeStationDetailCtrl BikeStationDetailCtrl}
+             *
+             * @param _item
+             * @param $event
+             */
+            $scope.itemClicked = function (_item, $event) {
+                $event.preventDefault();
+                $state.transitionTo(&#39;tab.bikeStation-detail&#39;, {
+                    data: JSON.stringify(_item)
+                });
+            };
+
+
+            //
+            $cordovaGeolocation.getCurrentPosition().then(function (currentPosition) {
+                // Position here: position.coords.latitude, position.coords.longitude
+
+                var p = CityBikeNY.getClosest(currentPosition.coords, 10);
+                p.then(function (bikeData) {
+                    var bikeStations = bikeData;
+
+                    $scope.bikeLocation = bikeStations;
+
+                    console.log(JSON.stringify($scope.bikeLocation, null, 2));
+                });
+            }, function (err) {
+                console.log(JSON.stringify(err, null, 2));
+                alert(err.message);
+            });
+
+
+        }])
+
+<span id='Application-BikeStationDetailCtrl'>/**
+</span> * @class Application.BikeStationDetailCtrl
+ *
+ * Displays Detail of Bike Station Location
+ *
+ * @param {Object} $scope
+ * @param {Directive} $cordovaGeolocation
+ * @param {Object} $stateParams
+ */
+
+    .controller(&#39;BikeStationDetailCtrl&#39;, [&#39;$scope&#39;, &#39;$stateParams&#39;, function ($scope, $stateParams) {
+
+        /* this is the stringified JSON object representing the station clicked */
+        var info = JSON.parse($stateParams.data);
+
+<span id='Application-BikeStationDetailCtrl-method-initializeMap'>        /**
+</span>         * @method initializeMap
+         *
+         * uses google maps angular directive to dislay the location of the bike station
+         * on the map. It will use the marker object to display the exact location.
+         *
+         * @param {Object} $scope
+         * @param {Object} info BikeStation information as JSON object passed in from $stateParams
+         */
+        function initializeMap($scope, info) {
+
+            // do not display map element until we have location
+            $scope.show = false
+
+            // get location from device
+            navigator.geolocation.getCurrentPosition(function (pos) {
+                console.log(&#39;Got pos&#39; + JSON.stringify(pos));
+                console.log(&#39;Got info&#39; + JSON.stringify(info, null, 2));
+
+
+                // set all the scope values needed for the map
+                angular.extend($scope, {
+                    show: true,
+                    zoom: 20,
+                    markers: [
+                        {
+                            latitude: info.latitude,
+                            longitude: info.longitude,
+                            title: &quot;location&quot;
+                        }
+                    ],
+                    options: {
+                        disableDefaultUI: false,
+                        panControl: false
+                    },
+                    center: {
+                        latitude: info.latitude,
+                        longitude: info.longitude,
+                    }
+                });
+
+                $scope.$apply();
+
+            }, function (error) {
+                alert(&#39;Unable to get location: &#39; + error.message);
+            });
+        }
+
+        initializeMap($scope, info);
+    }])
+
+    .controller(&#39;AccountCtrl&#39;, function ($scope) {
+    });
+</pre>
+</body>
+</html>

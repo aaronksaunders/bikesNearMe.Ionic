@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='services'>/**
+</span> * @class services
+ */
+angular.module(&#39;starter.services&#39;, [])
+
+    .directive(&#39;map&#39;, function () {
+        return {
+            restrict: &#39;E&#39;,
+            scope: {
+                onCreate: &#39;&amp;&#39;
+            },
+            link: function ($scope, $element, $attr) {
+                function initialize() {
+                    var mapOptions = {
+                        center: new google.maps.LatLng(43.07493, -89.381388),
+                        zoom: 16,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    var map = new google.maps.Map($element[0], mapOptions);
+
+                    $scope.onCreate({map: map});
+
+                    // Stop the side bar from dragging when mousedown/tapdown on the map
+                    google.maps.event.addDomListener($element[0], &#39;mousedown&#39;, function (e) {
+                        e.preventDefault();
+                        return false;
+                    });
+                }
+
+                google.maps.event.addDomListener(window, &#39;load&#39;, initialize);
+            }
+        }
+    })
+<span id='Factory-CityBikeNY'>/**
+</span> * @class Factory.CityBikeNY
+ *
+ * this gets the CityBikeNY locations from the http endpoint that has been provided
+ *
+ * &lt;code&gt;http://www.citibikenyc.com/stations/json&lt;/code&gt;
+ *
+ */
+    .factory(&#39;CityBikeNY&#39;, [&#39;$resource&#39;, &#39;$q&#39;, function ($resource, $q) {
+
+<span id='Factory-CityBikeNY-method-getDistance'>        /**
+</span>         * @private
+         * @method getDistance
+         *
+         * private method get the distance between the two coords provided
+         *
+         * @param coord1 starting location
+         * @param coord2 ending location
+         * @returns {number} distance between two points
+         */
+        function getDistance(coord1, coord2) {
+
+            if (typeof (Number.prototype.toRad) === &quot;undefined&quot;) {
+                Number.prototype.toRad = function () {
+                    return this * Math.PI / 180;
+                };
+            }
+
+            var lat1 = coord1.latitude;
+            var lat2 = coord2.latitude;
+            var lon1 = coord1.longitude;
+            var lon2 = coord2.longitude;
+
+            var R = 6371;
+            // km
+            var dLat = (lat2 - lat1).toRad();
+            var dLon = (lon2 - lon1).toRad();
+            lat1 = lat1.toRad();
+            lat2 = lat2.toRad();
+
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+
+            return d;
+        }
+
+        var resource = $resource(&#39;http://www.citibikenyc.com/stations/json&#39;, {}, {
+            &#39;get&#39;: {method: &#39;GET&#39;, cache: true},
+            &#39;save&#39;: {method: &#39;POST&#39;},
+            &#39;query&#39;: {method: &#39;GET&#39;, isArray: true},
+            &#39;remove&#39;: {method: &#39;DELETE&#39;},
+            &#39;delete&#39;: {method: &#39;DELETE&#39;}
+        });
+
+<span id='Factory-CityBikeNY-method-getClosest'>        /**
+</span>         * @method getClosest
+         *
+         * gets the closest bike stations to your current location
+         *
+         * @param _currentPosition
+         * @param _count
+         * @returns {*}
+         */
+        resource.getClosest = function (_currentPosition, _count) {
+            var deferred = $q.defer();
+            var that = this;
+
+                that.get().$promise.then(function (data) {
+
+                    var bikeStations = data.stationBeanList;
+
+                    bikeStations.sort(function (station1, station2) {
+                        return getDistance(_currentPosition, station1) - getDistance(_currentPosition, station2);
+                    });
+
+                    bikeStations = bikeStations.slice(0, _count || 5);
+
+                    bikeStations.map(function (item) {
+                        item.distance = getDistance(_currentPosition,
+                            {latitude: item.latitude, longitude: item.longitude});
+                    });
+
+                    deferred.resolve(bikeStations);
+
+                }, function (_error) {
+                    console.log(_error);
+                    deferred.reject(_error);
+                });
+
+            return deferred.promise;
+        };
+        return resource;
+
+    }]);
+</pre>
+</body>
+</html>
