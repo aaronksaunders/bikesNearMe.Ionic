@@ -32,6 +32,16 @@ angular.module('starter.services', [])
         }
     })
 /**
+ * @class Factory.CapitalBikeShareDC
+ *
+ * this gets the CapitalBikeShareDC locations from the http endpoint that has been provided
+ *
+ * <code>https://www.capitalbikeshare.com/data/stations/bikeStations.xml</code>
+ *
+ */
+    .factory('CityBikeDC', ['$resource', '$q', function ($resource, $q) {
+    }])
+/**
  * @class Factory.CityBikeNY
  *
  * this gets the CityBikeNY locations from the http endpoint that has been provided
@@ -99,27 +109,27 @@ angular.module('starter.services', [])
             var deferred = $q.defer();
             var that = this;
 
-                that.get().$promise.then(function (data) {
+            that.get().$promise.then(function (data) {
 
-                    var bikeStations = data.stationBeanList;
+                var bikeStations = data.stationBeanList;
 
-                    bikeStations.sort(function (station1, station2) {
-                        return getDistance(_currentPosition, station1) - getDistance(_currentPosition, station2);
-                    });
-
-                    bikeStations = bikeStations.slice(0, _count || 5);
-
-                    bikeStations.map(function (item) {
-                        item.distance = getDistance(_currentPosition,
-                            {latitude: item.latitude, longitude: item.longitude});
-                    });
-
-                    deferred.resolve(bikeStations);
-
-                }, function (_error) {
-                    console.log(_error);
-                    deferred.reject(_error);
+                bikeStations.sort(function (station1, station2) {
+                    return getDistance(_currentPosition, station1) - getDistance(_currentPosition, station2);
                 });
+
+                bikeStations = bikeStations.slice(0, _count || 5);
+
+                bikeStations.map(function (item) {
+                    item.distance = getDistance(_currentPosition,
+                        {latitude: item.latitude, longitude: item.longitude});
+                });
+
+                deferred.resolve(bikeStations);
+
+            }, function (_error) {
+                console.log(_error);
+                deferred.reject(_error);
+            });
 
             return deferred.promise;
         };
