@@ -102,7 +102,7 @@ angular.module('starter.services', [])
          * gets the closest bike stations to your current location
          *
          * @param _currentPosition
-         * @param _count
+         * @param _count number of stations to return from query
          * @returns {*}
          */
         resource.getClosest = function (_currentPosition, _count) {
