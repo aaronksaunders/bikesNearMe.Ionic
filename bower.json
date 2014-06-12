@@ -6,6 +6,6 @@
     "angular-google-maps": "~1.1.0"
   },
   "dependencies": {
-    "angular-xml": "~1.0.2"
+    "x2js": "1.1.5"
   }
 }
