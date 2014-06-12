@@ -2,7 +2,16 @@
  * @class services
  */
 angular.module('starter.services', [])
-
+    .factory('xmlParser', function () {
+        var x2js = new X2JS();
+        return {
+            xml2json: x2js.xml2json,
+            xml_str2json: function (args) {
+                return angular.bind(x2js, x2js.xml_str2json, args)();
+            },
+            json2xml: x2js.json2xml_str
+        }
+    })
     .directive('map', function () {
         return {
             restrict: 'E',
@@ -39,7 +48,98 @@ angular.module('starter.services', [])
  * <code>https://www.capitalbikeshare.com/data/stations/bikeStations.xml</code>
  *
  */
-    .factory('CityBikeDC', ['$resource', '$q', function ($resource, $q) {
+    .factory('CityBikeDC', ['$resource', '$q', 'xmlParser', function ($resource, $q, xmlParser) {
+        /**
+         * @private
+         * @method getDistance
+         *
+         * private method get the distance between the two coords provided
+         *
+         * @param coord1 starting location
+         * @param coord2 ending location
+         * @returns {number} distance between two points
+         */
+        function getDistance(coord1, coord2) {
+
+            if (typeof (Number.prototype.toRad) === "undefined") {
+                Number.prototype.toRad = function () {
+                    return this * Math.PI / 180;
+                };
+            }
+
+            var lat1 = coord1.latitude;
+            var lat2 = coord2.latitude;
+            var lon1 = coord1.longitude;
+            var lon2 = coord2.longitude;
+
+            var R = 6371;
+            // km
+            var dLat = (lat2 - lat1).toRad();
+            var dLon = (lon2 - lon1).toRad();
+            lat1 = lat1.toRad();
+            lat2 = lat2.toRad();
+
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+
+            return d;
+        }
+
+        var resource = $resource('https://www.capitalbikeshare.com/data/stations/bikeStations.xml', {}, {
+            'get': {
+                method: 'GET', cache: true, headers: {'Content-Type': 'application/xml; charset=UTF-8'},
+                transformResponse: function (data, headers) {
+                    //MESS WITH THE DATA
+                    var json = xmlParser.xml_str2json(data)
+                    return json;
+                }
+            },
+            'save': {method: 'POST'},
+            'query': {method: 'GET', isArray: true},
+            'remove': {method: 'DELETE'},
+            'delete': {method: 'DELETE'}
+        });
+
+        /**
+         * @method getClosest
+         *
+         * gets the closest bike stations to your current location
+         *
+         * @param _currentPosition
+         * @param _count number of stations to return from query
+         * @returns {*}
+         */
+        resource.getClosest = function (_currentPosition, _count) {
+            var deferred = $q.defer();
+            var that = this;
+
+            that.get().$promise.then(function (data) {
+
+                var bikeStations;
+                //bikeStations = ‌‌data.stations.station;
+
+                bikeStations.sort(function (station1, station2) {
+                    return getDistance(_currentPosition, station1) - getDistance(_currentPosition, station2);
+                });
+
+                bikeStations = bikeStations.slice(0, _count || 5);
+
+                bikeStations.map(function (item) {
+                    item.distance = getDistance(_currentPosition,
+                        {latitude: item.latitude, longitude: item.longitude});
+                });
+
+                deferred.resolve(bikeStations);
+
+            }, function (_error) {
+                console.log(_error);
+                deferred.reject(_error);
+            });
+
+            return deferred.promise;
+        };
+        return resource;
     }])
 /**
  * @class Factory.CityBikeNY

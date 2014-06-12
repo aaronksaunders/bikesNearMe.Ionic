@@ -68,9 +68,9 @@ angular.module('starter.controllers', [])
  * @param {Directive} $cordovaGeolocation
  * @param {Object} $state
  */
-    .controller('BikesMainCtrl', ['$scope', 'CityBikeNY', '$cordovaGeolocation', '$state',
+    .controller('BikesMainCtrl', ['$scope', 'CityBikeDC', '$cordovaGeolocation', '$state',
 
-        function ($scope, CityBikeNY, $cordovaGeolocation, $state) {
+        function ($scope, CityBikeDC, $cordovaGeolocation, $state) {
 
             /**
              * @private
@@ -94,7 +94,7 @@ angular.module('starter.controllers', [])
             $cordovaGeolocation.getCurrentPosition().then(function (currentPosition) {
                 // Position here: position.coords.latitude, position.coords.longitude
 
-                var p = CityBikeNY.getClosest(currentPosition.coords, 10);
+                var p = CityBikeDC.getClosest(currentPosition.coords, 10);
                 p.then(function (bikeData) {
                     var bikeStations = bikeData;
 
