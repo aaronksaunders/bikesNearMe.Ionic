@@ -67,17 +67,17 @@ angular.module('starter.services', [])
                 };
             }
 
-            var lat1 = coord1.latitude;
-            var lat2 = coord2.latitude;
-            var lon1 = coord1.longitude;
-            var lon2 = coord2.longitude;
+            var lat1 = coord1.latitude ||  Number(coord1.lat);
+            var lat2 = coord2.latitude ||  Number(coord2.lat);
+            var lon1 = coord1.longitude || Number(coord1.long);
+            var lon2 = coord2.longitude || Number(coord2.long);
 
             var R = 6371;
             // km
             var dLat = (lat2 - lat1).toRad();
             var dLon = (lon2 - lon1).toRad();
-            lat1 = lat1.toRad();
-            lat2 = lat2.toRad();
+            lat1 = Number(lat1).toRad();
+            lat2 = Number(lat2).toRad();
 
             var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
             var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
@@ -116,8 +116,7 @@ angular.module('starter.services', [])
 
             that.get().$promise.then(function (data) {
 
-                var bikeStations;
-                //bikeStations = ‌‌data.stations.station;
+                var bikeStations = data.stations.station;
 
                 bikeStations.sort(function (station1, station2) {
                     return getDistance(_currentPosition, station1) - getDistance(_currentPosition, station2);
@@ -127,7 +126,7 @@ angular.module('starter.services', [])
 
                 bikeStations.map(function (item) {
                     item.distance = getDistance(_currentPosition,
-                        {latitude: item.latitude, longitude: item.longitude});
+                        {latitude: item.lat, longitude: item.long});
                 });
 
                 deferred.resolve(bikeStations);
