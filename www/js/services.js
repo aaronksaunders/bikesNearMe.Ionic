@@ -2,6 +2,13 @@
  * @class services
  */
 angular.module('starter.services', [])
+    /**
+     * @member xmlParser
+     * 
+     * uses xml2json.js library to create factory for handling xml conversion
+     * in application. We did need to utilize <code>angular.bind</code> to address
+     * losing context when the finxtion is called
+     */
     .factory('xmlParser', function () {
         var x2js = new X2JS();
         return {
