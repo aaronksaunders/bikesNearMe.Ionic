@@ -175,6 +175,12 @@ angular.module('starter.controllers', [])
 
         initializeMap($scope, info);
     }])
-
+/**
+ * @class Application.AccountCtrl
+ *
+ * let the user set the specific location to use in the application, plus manages
+ * other configuration options
+ */
     .controller('AccountCtrl', function ($scope) {
+
     });
