@@ -87,7 +87,7 @@ angular.module('starter', ['ngCordova', 'ionic', 'google-maps', 'starter.control
                 views: {
                     'tab-account': {
                         templateUrl: 'templates/tab-account.html',
-                        controller: 'AccountCtrl'
+                        controller: 'AccountCtrl as acctCtrl'
                     }
                 }
             })

@@ -182,5 +182,7 @@ angular.module('starter.controllers', [])
  * other configuration options
  */
     .controller('AccountCtrl', function ($scope) {
-
+        this.itemClicked = function (_location, $event) {
+            alert("item clicked");
+        }
     });
