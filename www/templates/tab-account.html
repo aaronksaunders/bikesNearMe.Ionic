@@ -1,18 +1,11 @@
 <ion-view title="Account">
   <ion-content class="has-header padding">
-      <div class="list">
+      <div class="list" ng-init="locations = ['New York','Washington DC']">
 
-          <label class="item item-radio">
+          <label class="item item-radio" ng-repeat="location in locations">
               <input type="radio" name="group">
               <div class="item-content">
-                  New York
-              </div>
-              <i class="radio-icon ion-checkmark"></i>
-          </label>
-          <label class="item item-radio">
-              <input type="radio" name="group">
-              <div class="item-content">
-                  Washington DC
+                  {{location}}
               </div>
               <i class="radio-icon ion-checkmark"></i>
           </label>
