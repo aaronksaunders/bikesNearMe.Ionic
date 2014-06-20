@@ -2,13 +2,13 @@
  * @class services
  */
 angular.module('starter.services', [])
-    /**
-     * @member xmlParser
-     * 
-     * uses xml2json.js library to create factory for handling xml conversion
-     * in application. We did need to utilize <code>angular.bind</code> to address
-     * losing context when the finxtion is called
-     */
+/**
+ * @member xmlParser
+ *
+ * uses xml2json.js library to create factory for handling xml conversion
+ * in application. We did need to utilize <code>angular.bind</code> to address
+ * losing context when the finxtion is called
+ */
     .factory('xmlParser', function () {
         var x2js = new X2JS();
         return {
@@ -74,8 +74,8 @@ angular.module('starter.services', [])
                 };
             }
 
-            var lat1 = coord1.latitude ||  Number(coord1.lat);
-            var lat2 = coord2.latitude ||  Number(coord2.lat);
+            var lat1 = coord1.latitude || Number(coord1.lat);
+            var lat2 = coord2.latitude || Number(coord2.lat);
             var lon1 = coord1.longitude || Number(coord1.long);
             var lon2 = coord2.longitude || Number(coord2.long);
 
@@ -146,6 +146,28 @@ angular.module('starter.services', [])
             return deferred.promise;
         };
         return resource;
+    }])
+    .service('BikeManager', ['CityBikeNY', 'CityBikeDC', function (CityBikeNY, CityBikeDC) {
+        var currentLocation;
+
+        return {
+            /**
+             *
+             * @param _location
+             */
+            setBikeLocation: function (_location) {
+                currentLocation = _location;
+                console.log(_location);
+            },
+            getClosest: function (_currentPosition, _count) {
+                if (currentLocation === "New York") {
+                    return CityBikeNY.getClosest(_currentPosition, _count);
+                } else {
+                    return CityBikeDC.getClosest(_currentPosition, _count);
+                }
+
+            }
+        }
     }])
 /**
  * @class Factory.CityBikeNY

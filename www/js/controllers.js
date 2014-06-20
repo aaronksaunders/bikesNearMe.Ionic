@@ -68,9 +68,9 @@ angular.module('starter.controllers', [])
  * @param {Directive} $cordovaGeolocation
  * @param {Object} $state
  */
-    .controller('BikesMainCtrl', ['$scope', 'CityBikeDC', '$cordovaGeolocation', '$state',
+    .controller('BikesMainCtrl', ['$scope', 'BikeManager', '$cordovaGeolocation', '$state',
 
-        function ($scope, CityBikeDC, $cordovaGeolocation, $state) {
+        function ($scope, BikeManager, $cordovaGeolocation, $state) {
 
             /**
              * @private
@@ -94,7 +94,7 @@ angular.module('starter.controllers', [])
             $cordovaGeolocation.getCurrentPosition().then(function (currentPosition) {
                 // Position here: position.coords.latitude, position.coords.longitude
 
-                var p = CityBikeDC.getClosest(currentPosition.coords, 10);
+                var p = BikeManager.getClosest(currentPosition.coords, 10);
                 p.then(function (bikeData) {
                     var bikeStations = bikeData;
 
@@ -181,8 +181,18 @@ angular.module('starter.controllers', [])
  * let the user set the specific location to use in the application, plus manages
  * other configuration options
  */
-    .controller('AccountCtrl', function ($scope) {
+    .controller('AccountCtrl', ['$scope', 'BikeManager', function ($scope, BikeManager) {
+
+        /**
+         * when item clicked, reset teh default model factory to use when
+         * querying for bicycles
+         *
+         * @param _location
+         * @param $event
+         */
         this.itemClicked = function (_location, $event) {
             alert("item clicked");
+
+            BikeManager.setBikeLocation((_location));
         }
-    });
+    }]);
