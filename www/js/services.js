@@ -147,7 +147,8 @@ angular.module('starter.services', [])
         };
         return resource;
     }])
-    .service('BikeManager', ['CityBikeNY', 'CityBikeDC', function (CityBikeNY, CityBikeDC) {
+    .service('BikeManager', ['CityBikeNY', 'CityBikeDC','$rootScope',
+        function (CityBikeNY, CityBikeDC,$rootScope) {
         var currentLocation;
 
         return {
@@ -158,6 +159,15 @@ angular.module('starter.services', [])
             setBikeLocation: function (_location) {
                 currentLocation = _location;
                 console.log(_location);
+
+                //$rootScope.$emit('BikeLocation.changed', _location);
+            },
+            /**
+             *
+             * @param _location
+             */
+            getBikeLocation: function () {
+                return currentLocation;
             },
             getClosest: function (_currentPosition, _count) {
                 if (currentLocation === "New York") {

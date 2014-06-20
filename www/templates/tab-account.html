@@ -4,10 +4,10 @@
 
             <label class="item item-radio" ng-repeat="location in locations"
                    ng-click="acctCtrl.itemClicked(location,$event)">
-                <input type="radio" name="group">
+                <input type="radio" name="group" value="{{$index}}" ng-model="acctCtrl.checkboxSelection">
 
                 <div class="item-content">
-                    {{location}}
+                    {{location}} {{$index}}
                 </div>
                 <i class="radio-icon ion-checkmark"></i>
             </label>

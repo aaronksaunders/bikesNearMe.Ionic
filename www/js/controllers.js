@@ -183,6 +183,13 @@ angular.module('starter.controllers', [])
  */
     .controller('AccountCtrl', ['$scope', 'BikeManager', function ($scope, BikeManager) {
 
+        var currentLocation = BikeManager.getBikeLocation();
+        if (currentLocation === "New York") {
+            this.checkboxSelection = '0';
+        } else {
+            this.checkboxSelection = '1';
+        }
+
         /**
          * when item clicked, reset teh default model factory to use when
          * querying for bicycles
