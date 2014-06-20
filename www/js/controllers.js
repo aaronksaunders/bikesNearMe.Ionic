@@ -162,7 +162,7 @@ angular.module('starter.controllers', [])
                     },
                     center: {
                         latitude: info.latitude,
-                        longitude: info.longitude,
+                        longitude: info.longitude
                     }
                 });
 
