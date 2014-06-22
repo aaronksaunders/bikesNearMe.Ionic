@@ -93,6 +93,25 @@ angular.module('starter.services', [])
             return d;
         }
 
+        /**
+         * converts the object into the proper format for display
+         *
+         * @param _input
+         * @returns {{id: *, stationName: *, statusValue: boolean, availableBikes: *, availableDocks: *, distance: *, latitude: (defaults.lat|*|MapKit.options.lat|pins.lat), longitude: (long|*|Docs.data.long|types.long|Option.long)}}
+         */
+        function normalizeObject(_input) {
+            return {
+                id: _input.id,
+                stationName: _input.name,
+                statusValue: !_input.locked,
+                availableBikes: _input.nbBikes,
+                availableDocks: _input.nbEmptyDocks,
+                distance: _input.distance,
+                latitude: _input.lat,
+                longitude: _input.long
+            }
+        }
+
         var resource = $resource('https://www.capitalbikeshare.com/data/stations/bikeStations.xml', {}, {
             'get': {
                 method: 'GET', cache: true, headers: {'Content-Type': 'application/xml; charset=UTF-8'},
@@ -131,12 +150,14 @@ angular.module('starter.services', [])
 
                 bikeStations = bikeStations.slice(0, _count || 5);
 
-                bikeStations.map(function (item) {
+                var _bikeStations = bikeStations.map(function (item) {
+
                     item.distance = getDistance(_currentPosition,
                         {latitude: item.lat, longitude: item.long});
+                    return normalizeObject(item);
                 });
 
-                deferred.resolve(bikeStations);
+                deferred.resolve(_bikeStations);
 
             }, function (_error) {
                 console.log(_error);
@@ -147,38 +168,38 @@ angular.module('starter.services', [])
         };
         return resource;
     }])
-    .service('BikeManager', ['CityBikeNY', 'CityBikeDC','$rootScope',
-        function (CityBikeNY, CityBikeDC,$rootScope) {
-        var currentLocation;
+    .service('BikeManager', ['CityBikeNY', 'CityBikeDC', '$rootScope',
+        function (CityBikeNY, CityBikeDC, $rootScope) {
+            var currentLocation;
 
-        return {
-            /**
-             *
-             * @param _location
-             */
-            setBikeLocation: function (_location) {
-                currentLocation = _location;
-                console.log(_location);
+            return {
+                /**
+                 *
+                 * @param _location
+                 */
+                setBikeLocation: function (_location) {
+                    currentLocation = _location;
+                    console.log(_location);
 
-                //$rootScope.$emit('BikeLocation.changed', _location);
-            },
-            /**
-             *
-             * @param _location
-             */
-            getBikeLocation: function () {
-                return currentLocation;
-            },
-            getClosest: function (_currentPosition, _count) {
-                if (currentLocation === "New York") {
-                    return CityBikeNY.getClosest(_currentPosition, _count);
-                } else {
-                    return CityBikeDC.getClosest(_currentPosition, _count);
+                    //$rootScope.$emit('BikeLocation.changed', _location);
+                },
+                /**
+                 *
+                 * @param _location
+                 */
+                getBikeLocation: function () {
+                    return currentLocation;
+                },
+                getClosest: function (_currentPosition, _count) {
+                    if (currentLocation === "New York") {
+                        return CityBikeNY.getClosest(_currentPosition, _count);
+                    } else {
+                        return CityBikeDC.getClosest(_currentPosition, _count);
+                    }
+
                 }
-
             }
-        }
-    }])
+        }])
 /**
  * @class Factory.CityBikeNY
  *
