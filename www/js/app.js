@@ -10,7 +10,7 @@
  * 'starter.controllers' is found in controllers.js
  *
  */
-angular.module('starter', ['ngCordova', 'ionic', 'google-maps', 'starter.controllers', 'starter.services', 'ngResource'])
+angular.module('starter', ['ngCordova', 'ionic', 'google-maps', 'starter.controllers', 'starter.services', 'ngResource', 'ngActivityIndicator'])
 /**
  * @class starter.run
  *
@@ -29,6 +29,26 @@ angular.module('starter', ['ngCordova', 'ionic', 'google-maps', 'starter.control
             }
         });
     })
+    .factory('authHttpResponseInterceptor', ['$q', '$location', '$activityIndicator', function ($q, $location, $activityIndicator) {
+        return {
+            response: function (response) {
+                console.log("response ");
+                setTimeout(function () {
+                    $activityIndicator.stopAnimating();
+                }, 3000);
+                return response
+            },
+            request: function (request) {
+                console.log("request ");
+
+                $activityIndicator.startAnimating();
+
+                return request
+            },
+            responseError: function (rejection) {
+            }
+        }
+    }])
 /**
  * @class starter.config
  *
@@ -37,7 +57,13 @@ angular.module('starter', ['ngCordova', 'ionic', 'google-maps', 'starter.control
  * Set up the various states which the app can be in.
  * Each state's controller can be found in controllers.js
  */
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider,$activityIndicatorProvider) {
+
+
+        $activityIndicatorProvider.setActivityIndicatorStyle('SpinnerDark');
+
+        //Http Intercpetor to check auth failures for xhr requests
+        $httpProvider.interceptors.push('authHttpResponseInterceptor');
 
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
 

@@ -181,7 +181,13 @@ angular.module('starter.controllers', [])
  * let the user set the specific location to use in the application, plus manages
  * other configuration options
  */
-    .controller('AccountCtrl', ['$scope', 'BikeManager', function ($scope, BikeManager) {
+    .controller('AccountCtrl', ['$scope', 'BikeManager','$activityIndicator', function ($scope, BikeManager,$activityIndicator) {
+
+        $activityIndicator.startAnimating();
+        setTimeout(function () {
+            $activityIndicator.stopAnimating();
+        }, 3000);
+
 
         var currentLocation = BikeManager.getBikeLocation();
         if (currentLocation === "New York") {
